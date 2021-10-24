@@ -9,13 +9,13 @@ import turtle
 import time
 import random
 # TODO uncomment the following line to use pyserial package
-#import serial
+import serial
 
 # Note the serial port dev file name
 # need to change based on the particular host machine
 # TODO uncomment the following two lines to initialize serial port
-#serialDevFile = '/dev/cu.usbmodem14201'
-#ser=serial.Serial(serialDevFile, 9600, timeout=0)
+serialDevFile = '/dev/ttyACM0'
+ser=serial.Serial(serialDevFile, 9600, timeout=0)
 
 delay = 0.1
 
@@ -116,6 +116,20 @@ while True:
     # elif ......
     #
 
+    # Read serial port to find direction to move snake
+    chr = ser.read()
+    #print(chr)
+    #print(ser.readline())
+    if chr == b'w':
+        head.direction = "up"
+    elif chr == b's':
+        head.direction = "down"
+    elif chr == b'd':
+        head.direction = "right"
+    elif chr == b'a':
+        head.direction = "left"
+
+
     # Check for a collision with the border
     if head.xcor()>290 or head.xcor()<-290 or head.ycor()>290 or head.ycor()<-290:
         time.sleep(1)
@@ -146,6 +160,7 @@ while True:
         # you need to send a flag to Arduino indicating an apple is eaten
         # so that the Arduino will beep the buzzer
         # Hint: refer to the example at Serial-RW/pyserial-test.py
+
 
         # Move the food to a random spot
         x = random.randint(-290, 290)
