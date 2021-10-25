@@ -161,6 +161,8 @@ while True:
         # so that the Arduino will beep the buzzer
         # Hint: refer to the example at Serial-RW/pyserial-test.py
 
+        # Send beep signal to serial port
+        ser.write(b'b')
 
         # Move the food to a random spot
         x = random.randint(-290, 290)
