@@ -16,7 +16,14 @@ void loop() {
   // put your main code here, to run repeatedly:
   int X = analogRead(pinX); // Read the X axis analog value
   int Y = analogRead(pinY); // Read the Y axis analog value
-
+  
+  // Check for signal indicating if apple has been eaten, if it has then beep the buzzer
+  if(Serial.read() == 'b'){
+    tone(buzzerPin, buzzerFrequency);
+    delay(100);
+    noTone(buzzerPin);
+  }
+  
   // Check what direction joystick is pointing and send a signal to the serial port
 
   // UP
