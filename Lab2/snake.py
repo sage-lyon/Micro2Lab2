@@ -118,8 +118,7 @@ while True:
 
     # Read serial port to find direction to move snake
     chr = ser.read()
-    #print(chr)
-    #print(ser.readline())
+    print(ser.readline())
     if chr == b'w':
         head.direction = "up"
     elif chr == b's':
