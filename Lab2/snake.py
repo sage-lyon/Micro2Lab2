@@ -9,13 +9,44 @@ import turtle
 import time
 import random
 # TODO uncomment the following line to use pyserial package
-import serial
+#import serial
 
 # Note the serial port dev file name
 # need to change based on the particular host machine
 # TODO uncomment the following two lines to initialize serial port
-serialDevFile = '/dev/ttyACM0'
-ser=serial.Serial(serialDevFile, 9600, timeout=0)
+#serialDevFile = '/dev/cu.usbmodem14201'
+#ser=serial.Serial(serialDevFile, 9600, timeout=0)
+
+
+
+
+
+
+
+
+
+# pyserial-test.py
+# test serial communication with Arduino
+#
+# require pip install pyserial
+#
+# Usage: python3 pyserial-test.py
+#
+# yluo
+#
+import serial 
+
+# serial port dev file name
+# need to change based on the particular host machine
+#serialDevFile = '/dev/tty.usbmodem14601'
+#ser=serial.Serial(serialDevFile, 9600, timeout=1)
+import time
+#This is the setup to use pyserial on a windows operating system:
+ser = serial.Serial('COM14',9600,timeout=10) #A large timeout was used to allow the serial connection to be set up.
+
+#Defines variable for Serial output of Arduino or joystick
+serialIn = ''
+
 
 delay = 0.1
 
@@ -105,30 +136,22 @@ wn.onkey(go_right, "d")
 while True:
     wn.update()
 
-    # TODO: notes by Prof. Luo
-    # you need to add your code to read control information from serial port
-    # then use that information to set head.direction
-    # For example, 
-    # if control_information == 'w':
-    #     head.direction = "up"
-    # elif control_information == 's':
-    #     head.direction = "down"
-    # elif ......
-    #
 
-    # Read serial port to find direction to move snake
-    chr = ser.read()
-    print(ser.readline())
-    if chr == b'w':
+    ser.write(b'r')     #Sends a character to the arduino to tell it to send its current direction char.
+    serialIn = ser.read()       #Reads the current direction char from the arduino and saves in in serialIn.
+    print(serialIn)             #Prints serialIn to console.
+
+
+
+
+    if serialIn == b'w':
         head.direction = "up"
-    elif chr == b's':
+    elif serialIn == b's':
         head.direction = "down"
-    elif chr == b'd':
+    elif serialIn == b'd':
         head.direction = "right"
-    elif chr == b'a':
+    elif serialIn == b'a':
         head.direction = "left"
-
-
     # Check for a collision with the border
     if head.xcor()>290 or head.xcor()<-290 or head.ycor()>290 or head.ycor()<-290:
         time.sleep(1)
